@@ -27,13 +27,12 @@
     <div id="app" class="w-full max-w-2xl text-center">
         
         <!-- 
-            IMPORTANT: For GitHub Pages to work, you MUST replace the content 
-            of the 'src' attribute below with the COMPLETE, PUBLIC, RAW URL 
-            of your 'i_miss_you.mp3' file as hosted on your repository.
-            
-            Example: src="https://raw.githubusercontent.com/YourName/YourRepo/main/i_miss_you.mp3"
+            !!! ACTION REQUIRED FOR GITHUB PAGES !!!
+            You MUST replace 'PASTE_YOUR_FULL_RAW_GITHUB_MP3_URL_HERE' with the 
+            COMPLETE, PUBLIC, RAW URL of your 'i_miss_you.mp3' file from GitHub.
+            (Example: https://raw.githubusercontent.com/YourName/YourRepo/main/i_miss_you.mp3)
         -->
-        <audio id="song-audio" src="i_miss_you.mp3" preload="auto" style="display: none;"></audio>
+        <audio id="song-audio" src="PASTE_YOUR_FULL_RAW_GITHUB_MP3_URL_HERE" preload="auto" style="display: none;"></audio>
 
         <!-- Page 1: Declaration -->
         <div id="page-1" class="page-transition flex flex-col items-center justify-center space-y-8 h-[70vh]">
@@ -51,7 +50,7 @@
             </button>
         </div>
 
-        <!-- Page 2: Confession (This was originally Page 3) -->
+        <!-- Page 2: Confession (The Final Page) -->
         <div id="page-2" class="page-transition hidden flex-col items-center justify-center space-y-8 h-[70vh]">
             <h2 class="text-5xl romantic-font text-pink-300 mb-6">Just Me & You</h2>
             <div class="bg-gray-800 p-8 md:p-10 rounded-xl shadow-2xl border-2 border-pink-400 max-w-lg text-left">
@@ -90,10 +89,17 @@
                 // Loop the song indefinitely for background music
                 audio.loop = true; 
             }).catch(error => {
-                // If playback fails (common on public servers if URL is wrong), 
-                // we still transition but log the error.
+                // If playback fails (due to incorrect URL on GitHub Pages)
                 console.error("Audio playback error:", error);
-                alert("Music could not start! Please ensure 'i_miss_you.mp3' is publicly accessible on GitHub Pages and the URL is correct in the HTML code.");
+                
+                // Show a non-disruptive message instead of stopping the app
+                const audioElement = document.getElementById('song-audio');
+                if (audioElement.src.includes("PASTE_YOUR_FULL_RAW_GITHUB_MP3_URL_HERE")) {
+                    alert("Music could not start! Please update the 'src' in the HTML with the direct, raw URL of the MP3 file from GitHub.");
+                } else {
+                     alert("Music could not start! The publicly accessible URL may be incorrect or blocked by cross-origin policy.");
+                }
+                
                 showPage(pageNumber); 
             });
         }
