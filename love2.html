@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import for a romantic feel */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:wght@100..900&display=swap');
+        
+        .romantic-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        .main-font {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .page-transition {
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-pink-100 min-h-screen flex items-center justify-center p-4 main-font">
+
+    <div id="app" class="w-full max-w-2xl text-center">
+        
+        <!-- 
+            The audio element is hidden. Its source is the local MP3 file.
+            Playback is triggered when the user clicks the button on Page 1.
+        -->
+        <audio id="song-audio" src="i_miss_you.mp3" preload="auto" style="display: none;"></audio>
+
+        <!-- Page 1: Declaration -->
+        <div id="page-1" class="page-transition flex flex-col items-center justify-center space-y-8 h-[70vh]">
+            <h1 class="text-6xl md:text-8xl romantic-font text-pink-300 drop-shadow-lg animate-pulse">
+                My Dearest Love
+            </h1>
+            
+            <p class="text-xl md:text-3xl text-gray-300 leading-relaxed max-w-xl">
+                Every moment you're away, the world feels muted. I am missing you intensely, my heart aches to hear your laugh and feel your hand in mine. 
+                Right now, all I want is for you to be here with me, safe in my arms. You are everything.
+            </p>
+            
+            <button onclick="startAudioAndShowPage(2)" class="mt-12 px-8 py-4 bg-pink-600 text-white text-xl font-bold rounded-full shadow-2xl hover:bg-pink-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-pink-500 focus:ring-opacity-50">
+                A Message for You
+            </button>
+        </div>
+
+        <!-- Page 2: Confession (This was originally Page 3) -->
+        <div id="page-2" class="page-transition hidden flex-col items-center justify-center space-y-8 h-[70vh]">
+            <h2 class="text-5xl romantic-font text-pink-300 mb-6">Just Me & You</h2>
+            <div class="bg-gray-800 p-8 md:p-10 rounded-xl shadow-2xl border-2 border-pink-400 max-w-lg text-left">
+                <p class="text-xl text-gray-200 leading-relaxed italic">
+                    My love, I need you to know the depth of my feelings for you. It's so intense and all-consuming that it sometimes terrifies me. 
+                    I really love you, and because you mean everything to me, I have this overwhelming, selfish desire to keep you all to myself. 
+                    I want you for me only, forever. This possessiveness, this deep need, is why it scares me sometimes—it feels too big, too important, 
+                    and I worry about anything that could ever take you away. But please know, it only comes from how much you mean to my heart.
+                </p>
+            </div>
+            
+            <!-- Optional button to stop audio if desired, though usually not needed on the final page -->
+            <button onclick="stopAudio()" class="mt-8 px-6 py-3 bg-gray-600 text-white font-semibold rounded-full shadow-lg hover:bg-gray-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                End Site (Stop Music)
+            </button>
+        </div>
+        
+    </div>
+
+    <script>
+        // Global state and Audio variable
+        let currentPage = 1;
+        let audio;
+
+        // --- Core Audio & Navigation Functions ---
+
+        function startAudioAndShowPage(pageNumber) {
+            if (!audio) {
+                audio = document.getElementById('song-audio');
+            }
+
+            // Attempt to start playback
+            audio.play().then(() => {
+                // Playback successful, now show the next page
+                showPage(pageNumber);
+                // Loop the song indefinitely for background music
+                audio.loop = true; 
+            }).catch(error => {
+                // Handle case where playback is blocked (e.g., file not found or browser issue)
+                console.error("Audio playback error:", error);
+                // Proceed to the next page even if audio failed
+                showPage(pageNumber); 
+            });
+        }
+
+        function stopAudio() {
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0; // Reset
+            }
+        }
+
+        function showPage(pageNumber) {
+            currentPage = pageNumber;
+            const pages = [1, 2]; // Only two pages now
+            pages.forEach(p => {
+                const element = document.getElementById(`page-${p}`);
+                if (element) {
+                    if (p === pageNumber) {
+                        element.classList.remove('hidden');
+                        element.classList.add('flex');
+                        setTimeout(() => element.style.opacity = 1, 10);
+                    } else {
+                        element.style.opacity = 0;
+                        setTimeout(() => {
+                            element.classList.add('hidden');
+                            element.classList.remove('flex');
+                        }, 500); 
+                    }
+                }
+            });
+        }
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            audio = document.getElementById('song-audio');
+            showPage(1);
+        });
+    </script>
+</body>
+</html>
